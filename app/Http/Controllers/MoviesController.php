@@ -2,35 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUpdateMoviesRequest;
+use App\Http\Resources\MoviesResource;
 use App\Models\Movies;
-use Illuminate\Http\Request;
 
 class MoviesController extends Controller
 {
     public function index()
     {
-        $movies = Movies::select('titulo', 'genero', 'assistir')->get();
-        return response()->json($movies, 200);
+        $movies = Movies::all();
+        return MoviesResource::collection($movies);
     }
-    public function store(Request $request)
+    public function store(StoreUpdateMoviesRequest $request)
     {
-        $movie = Movies::create($request->all());
-        return response()->json('Filme cadastrado com sucesso!', 201);
+        $data = $request->validated();
+        $movie = Movies::create($data);
+        return new MoviesResource($movie);
     }
     public function show($id)
     {
-        $movie = Movies::find($id)->select('titulo', 'genero', 'assistir')->get();
-        return response()->json($movie, 200);
+        $movie = Movies::find($id);
+        return new MoviesResource($movie);
     }
-    public function update(Request $request, $id)
+    public function update(StoreUpdateMoviesRequest $request, $id)
     {
-        $movie = Movies::find($id)->update($request->all());
-        return response()->json('Atualizado!', 200);
-        //não está atualizando
+        $data = $request->validated();
+
+        $movie = Movies::find($id);
+        if (!$movie) {
+            return response()->json(['message' => 'Livro não encontrado'], 404);
+        }
+        $movie = Movies::create($data);
+
+        return new MoviesResource($movie);
     }
     public function destroy($id)
     {
-        $movie = Movies::find($id)->delete();
-        return response()->json('Deletado!', 200);
+        $book = Movies::find($id);
+        if (!$book) {
+            return response()->json(['message' => 'Usuário não encontrado'], 404);
+        }
+        $book->delete();
+        return response()->json([], 204);
     }
 }

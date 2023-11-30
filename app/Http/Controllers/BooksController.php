@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUpdateBooksRequest;
+use App\Http\Resources\BooksResource;
 use App\Models\Books;
 use Illuminate\Http\Request;
 
@@ -9,39 +11,42 @@ class BooksController extends Controller
 {
     public function index()
     {
-        $books = Books::select('titulo', 'autor', 'genero', 'formato')->get();
-        return response()->json($books, 200);
+        $books = Books::all();
+        return BooksResource::collection($books);
     }
-    public function store(Request $request)
+    public function store(StoreUpdateBooksRequest $request)
     {
-        //hashear a senha
-        $book = Books::create($request->all());
-        return response()->json(['message' => 'Livro cadastrado com sucesso'], 201);
+        $data = $request->validated();
+        $book = Books::create($data);
+        return new BooksResource($book);
     }
     public function show($id)
     {
-        $book = Books::findOrFail($id)->select('titulo', 'autor', 'genero', 'formato')->get();
-        try {
-            return response()->json($book[0], 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        $book = Books::find($id);
+        if (!$book) {
             return response()->json(['message' => 'Livro não encontrado'], 404);
         }
+        return new BooksResource($book);
+
     }
-    public function update(Request $request, $id)
+    public function update(StoreUpdateBooksRequest $request, string $id)
     {
-        $book = Books::find($id)->update($request->all());
+        $data = $request->all();
+        $book = Books::find($id);
+        if (!$book) {
+            return response()->json(['message' => 'Livro não encontrado'], 404);
+        }
+        $book->update($data);
 
-        return response()->json($book, 200);
-
-        //não está captando o body -> resolver
-
-        // $book->update($data);
-        // return response()->json($book, 200);
+        return new BooksResource($book);
     }
     public function destroy($id)
     {
-        $book = Books::findOrFail($id);
+        $book = Books::find($id);
+        if (!$book) {
+            return response()->json(['message' => 'Livro não encontrado'], 404);
+        }
         $book->delete();
-        return response()->json('Livro Apagado com sucesso', 200);
+        return response()->json([], 204);
     }
 }
