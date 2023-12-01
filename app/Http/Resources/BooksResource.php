@@ -16,10 +16,10 @@ class BooksResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "titulo" => $this->titulo,
-            "autor" => $this->autor,
-            "genero" => $this->genero,
-            "formato" => $this->formato,
+            "title" => $this->title,
+            "author" => $this->author,
+            "category" => $this->category,
+            "format" => $this->format,
         ];
     }
 }

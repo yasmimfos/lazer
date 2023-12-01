@@ -23,7 +23,7 @@ class StoreUpdateUserRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'nome' => [
+            'name' => [
                 'required',
                 'min:3',
                 'max:255'
@@ -33,7 +33,7 @@ class StoreUpdateUserRequest extends FormRequest
                 'email',
                 'unique:users'
             ],
-            'senha' => [
+            'password' => [
                 'required',
                 'min:6',
                 'max:100'
@@ -41,9 +41,10 @@ class StoreUpdateUserRequest extends FormRequest
         ];
 
         if ($this->method() == 'PUT') {
-            $rules['senha'] = ['nullable', 'min:6', 'max:100'];
+            $rules['password'] = ['nullable', 'min:6', 'max:100'];
             $rules['email'] = ['required', 'email', Rule::unique('users')->ignore($this->id)];
         }
+        ;
 
         return $rules;
     }

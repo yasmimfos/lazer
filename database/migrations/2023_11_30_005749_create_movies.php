@@ -12,9 +12,11 @@ return new class extends Migration {
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo');
-            $table->string('genero');
-            $table->string('assistir');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('title');
+            $table->string('category');
+            $table->string('whatch_on');
             $table->timestamps();
         });
     }

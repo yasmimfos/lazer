@@ -22,9 +22,9 @@ class StoreUpdateMoviesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "titulo" => 'required',
-            "genero" => 'sometimes',
-            "assistir" => 'sometimes'
+            "title" => 'required',
+            "category" => 'sometimes',
+            "watch_onr" => 'sometimes'
         ];
     }
 }

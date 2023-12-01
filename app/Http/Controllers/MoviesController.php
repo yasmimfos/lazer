@@ -30,9 +30,9 @@ class MoviesController extends Controller
 
         $movie = Movies::find($id);
         if (!$movie) {
-            return response()->json(['message' => 'Livro não encontrado'], 404);
+            return response()->json(['message' => 'Book not found'], 404);
         }
-        $movie = Movies::create($data);
+        $movie = Movies::update($data);
 
         return new MoviesResource($movie);
     }
@@ -40,7 +40,7 @@ class MoviesController extends Controller
     {
         $book = Movies::find($id);
         if (!$book) {
-            return response()->json(['message' => 'Usuário não encontrado'], 404);
+            return response()->json(['message' => 'Book not found'], 404);
         }
         $book->delete();
         return response()->json([], 204);

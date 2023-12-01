@@ -12,10 +12,12 @@ return new class extends Migration {
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo');
-            $table->string('autor');
-            $table->string('genero');
-            $table->string('formato');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('title');
+            $table->string('author');
+            $table->string('category');
+            $table->string('format');
             $table->timestamps();
         });
     }

@@ -22,10 +22,10 @@ class StoreUpdateBooksRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'titulo' => 'required',
-            'autor' => 'required',
-            'genero' => 'required',
-            'formato' => 'sometimes',
+            'title' => 'required',
+            'author' => 'required',
+            'category' => 'required',
+            'format' => 'sometimes',
         ];
     }
 }

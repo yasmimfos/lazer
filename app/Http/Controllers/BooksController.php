@@ -17,6 +17,7 @@ class BooksController extends Controller
     public function store(StoreUpdateBooksRequest $request)
     {
         $data = $request->validated();
+        $data['user_id'] = $request->user()->id;
         $book = Books::create($data);
         return new BooksResource($book);
     }
@@ -24,7 +25,7 @@ class BooksController extends Controller
     {
         $book = Books::find($id);
         if (!$book) {
-            return response()->json(['message' => 'Livro não encontrado'], 404);
+            return response()->json(['message' => 'Book not found'], 404);
         }
         return new BooksResource($book);
 
@@ -34,8 +35,9 @@ class BooksController extends Controller
         $data = $request->all();
         $book = Books::find($id);
         if (!$book) {
-            return response()->json(['message' => 'Livro não encontrado'], 404);
+            return response()->json(['message' => 'Book not found'], 404);
         }
+        $data['user_id'] = $request->user()->id;
         $book->update($data);
 
         return new BooksResource($book);
@@ -44,7 +46,7 @@ class BooksController extends Controller
     {
         $book = Books::find($id);
         if (!$book) {
-            return response()->json(['message' => 'Livro não encontrado'], 404);
+            return response()->json(['message' => 'Book not found'], 404);
         }
         $book->delete();
         return response()->json([], 204);
