@@ -11,8 +11,8 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::GetAll();
-        return $users;
+        $users = User::all();
+        return UserResouce::collection($users);
     }
     public function store(StoreUpdateUserRequest $request)
     {
@@ -23,14 +23,14 @@ class UserController extends Controller
         $user = User::create($data);
         return new UserResouce($user);
     }
-    public function show(Request $request)
+    public function show()
     {
-        $user = User::getById($request->user()->id);
+        $user = User::getById();
         return $user;
     }
     public function update(StoreUpdateUserRequest $request)
     {
-        $user = User::getById($request->user()->id);
+        $user = User::getById();
 
         $data = $request->validated();
         if ($request->password) {
@@ -41,9 +41,9 @@ class UserController extends Controller
 
         return new UserResouce($user);
     }
-    public function destroy(Request $request)
+    public function destroy()
     {
-        $user = User::getById($request->user()->id);
+        $user = User::getById();
         $user->delete();
         return response()->json([], 204);
     }

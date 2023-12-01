@@ -10,18 +10,16 @@ class BooksController extends Controller
 {
     public function index()
     {
-        $books = Books::getMyBooks();
-        return $books;
+        $books = Books::getAll();
+        return BooksResource::collection($books);
     }
     public function store(StoreUpdateBooksRequest $request)
     {
-        $user_id = $request->user()->id;
+        $user_id = auth()->user()->id;
         $data = $request->validated();
-
-        $data["user_id"] = $user_id;
+        $data['user_id'] = $user_id;
 
         $book = Books::create($data);
-
         return new BooksResource($book);
     }
     public function show($id)
@@ -36,8 +34,8 @@ class BooksController extends Controller
 
         $book = Books::getById($id);
         $data['user_id'] = $user_id;
-        $book->update($data);
 
+        $book->update($data);
         return new BooksResource($book);
     }
     public function destroy($id)

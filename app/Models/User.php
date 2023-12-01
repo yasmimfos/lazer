@@ -13,14 +13,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected function getAll()
+    protected function getById()
     {
-        $users = User::all();
-        return UserResouce::collection($users);
-    }
-    protected function getById($user_id)
-    {
-        $user = User::find($user_id);
+        $user = User::find(auth()->user()->id);
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
         }
