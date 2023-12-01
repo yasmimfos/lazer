@@ -10,39 +10,36 @@ class MoviesController extends Controller
 {
     public function index()
     {
-        $movies = Movies::all();
-        return MoviesResource::collection($movies);
+        $movies = Movies::getAll();
+        return $movies;
     }
     public function store(StoreUpdateMoviesRequest $request)
     {
+        $user_id = $request->user()->id;
+
         $data = $request->validated();
+        $data["user_id"] = $user_id;
+
         $movie = Movies::create($data);
+
         return new MoviesResource($movie);
     }
     public function show($id)
     {
-        $movie = Movies::find($id);
-        return new MoviesResource($movie);
+        $movie = Movies::getById($id);
+        return $movie;
     }
     public function update(StoreUpdateMoviesRequest $request, $id)
     {
         $data = $request->validated();
-
-        $movie = Movies::find($id);
-        if (!$movie) {
-            return response()->json(['message' => 'Book not found'], 404);
-        }
-        $movie = Movies::update($data);
-
-        return new MoviesResource($movie);
+        $movie = Movies::getById($id);
+        $movie->update($data);
+        return $movie;
     }
     public function destroy($id)
     {
-        $book = Movies::find($id);
-        if (!$book) {
-            return response()->json(['message' => 'Book not found'], 404);
-        }
-        $book->delete();
+        $movie = Movies::getById($id);
+        $movie->delete();
         return response()->json([], 204);
     }
 }

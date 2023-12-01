@@ -24,7 +24,7 @@ class StoreUpdateMoviesRequest extends FormRequest
         return [
             "title" => 'required',
             "category" => 'sometimes',
-            "watch_onr" => 'sometimes'
+            "watch_on" => 'sometimes'
         ];
     }
 }

@@ -24,7 +24,7 @@ class StoreUpdateBooksRequest extends FormRequest
         return [
             'title' => 'required',
             'author' => 'required',
-            'category' => 'required',
+            'category' => 'sometimes',
             'format' => 'sometimes',
         ];
     }

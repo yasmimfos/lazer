@@ -18,14 +18,15 @@ class User extends Authenticatable
         $users = User::all();
         return UserResouce::collection($users);
     }
-    protected function getById($id)
+    protected function getById($user_id)
     {
-        $user = User::find($id);
+        $user = User::find($user_id);
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
         }
         return new UserResouce($user);
     }
+
 
     /**
      * The attributes that are mass assignable.

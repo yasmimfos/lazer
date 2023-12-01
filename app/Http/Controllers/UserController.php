@@ -17,6 +17,7 @@ class UserController extends Controller
     public function store(StoreUpdateUserRequest $request)
     {
         $data = $request->validated();
+
         $data['password'] = bcrypt($request->password);
 
         $user = User::create($data);
@@ -29,10 +30,7 @@ class UserController extends Controller
     }
     public function update(StoreUpdateUserRequest $request)
     {
-        $user = User::find($request->user()->id);
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
+        $user = User::getById($request->user()->id);
 
         $data = $request->validated();
         if ($request->password) {
@@ -45,10 +43,7 @@ class UserController extends Controller
     }
     public function destroy(Request $request)
     {
-        $user = User::find($request->user()->id);
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
+        $user = User::getById($request->user()->id);
         $user->delete();
         return response()->json([], 204);
     }
