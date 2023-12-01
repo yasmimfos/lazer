@@ -10,7 +10,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         if (Auth::attempt($request->only('email', 'password'))) {
-            return response(['token' => $request->user()->createToken('log')->plainTextToken], 200);
+            return response($request->user()->createToken('log')->plainTextToken, 200);
         }
         return response('Not Authorized', 403);
     }

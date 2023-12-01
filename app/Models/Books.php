@@ -11,8 +11,11 @@ class Books extends Model
     use HasFactory;
     protected function getAll()
     {
-        $movies = Books::where('user_id', auth()->user()->id)->get();
-        return BooksResource::collection($movies);
+        $books = Books::where('user_id', auth()->user()->id)->get()->first();
+        if (!$books) {
+            return response()->json(['message' => 'No books yet...'], 404);
+        }
+        return BooksResource::collection($books);
     }
     protected function getById($id)
     {

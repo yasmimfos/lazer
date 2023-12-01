@@ -12,7 +12,10 @@ class Movies extends Model
 
     protected function getAll()
     {
-        $movies = Movies::where('user_id', auth()->user()->id)->get();
+        $movies = Movies::where('user_id', auth()->user()->id)->get()->first();
+        if (!$movies) {
+            return response()->json(['message' => 'No movies yet...'], 404);
+        }
         return MoviesResource::collection($movies);
     }
     protected function getById($id)
