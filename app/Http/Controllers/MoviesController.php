@@ -10,18 +10,13 @@ class MoviesController extends Controller
 {
     public function index()
     {
-        $movies = Movies::getAll();
-        return $movies;
+        $movies = Movies::all();
+        return MoviesResource::collection($movies);
     }
     public function store(StoreUpdateMoviesRequest $request)
     {
-        $user_id = $request->user()->id;
-
         $data = $request->validated();
-        $data["user_id"] = $user_id;
-
         $movie = Movies::create($data);
-
         return new MoviesResource($movie);
     }
     public function show($id)

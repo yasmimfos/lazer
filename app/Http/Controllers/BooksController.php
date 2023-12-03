@@ -10,15 +10,12 @@ class BooksController extends Controller
 {
     public function index()
     {
-        $books = Books::getAll();
-        return $books;
+        $books = Books::all();
+        return BooksResource::collection($books);
     }
     public function store(StoreUpdateBooksRequest $request)
     {
-        $user_id = auth()->user()->id;
         $data = $request->validated();
-        $data['user_id'] = $user_id;
-
         $book = Books::create($data);
         return new BooksResource($book);
     }
@@ -29,12 +26,8 @@ class BooksController extends Controller
     }
     public function update(StoreUpdateBooksRequest $request, string $id)
     {
-        $user_id = $request->user()->id;
         $data = $request->validated();
-
         $book = Books::getById($id);
-        $data['user_id'] = $user_id;
-
         $book->update($data);
         return new BooksResource($book);
     }

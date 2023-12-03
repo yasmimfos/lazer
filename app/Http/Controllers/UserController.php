@@ -23,14 +23,14 @@ class UserController extends Controller
         $user = User::create($data);
         return new UserResouce($user);
     }
-    public function show()
+    public function show(string $id)
     {
-        $user = User::getById();
+        $user = User::getById($id);
         return $user;
     }
-    public function update(StoreUpdateUserRequest $request)
+    public function update(StoreUpdateUserRequest $request, $id)
     {
-        $user = User::getById();
+        $user = User::getById($id);
 
         $data = $request->validated();
         if ($request->password) {
@@ -41,9 +41,9 @@ class UserController extends Controller
 
         return new UserResouce($user);
     }
-    public function destroy()
+    public function destroy(string $id)
     {
-        $user = User::getById();
+        $user = User::getById($id);
         $user->delete();
         return response()->json([], 204);
     }

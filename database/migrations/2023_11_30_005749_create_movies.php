@@ -12,8 +12,6 @@ return new class extends Migration {
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
             $table->string('title');
             $table->string('category')->nullable();
             $table->string('watch_on')->nullable();
